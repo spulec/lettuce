@@ -52,4 +52,7 @@ setup(
     package_data={
         'lettuce': ['COPYING', '*.md'],
     },
+    dependency_links=[
+        "git+git://github.com/spulec/sure.git@py3k#egg=sure"
+    ],
 )
