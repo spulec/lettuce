@@ -14,7 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-from sure import that, expect
+from sure import expect
 from lettuce import step
 from lettuce.core import Scenario
 from lettuce.core import Feature
@@ -559,7 +559,7 @@ def test_single_scenario_single_scenario():
 
     first_scenario = feature.scenarios[0]
 
-    assert that(first_scenario.tags).deep_equals([
+    expect(first_scenario.tags).should.equal([
         'many', 'other', 'basic', 'tags', 'here', ':)'])
 
 
@@ -580,21 +580,21 @@ def test_single_scenario_many_scenarios():
 
     @step(r'fill my email with [\'"]?([^\'"]+)[\'"]?')
     def fill_email(step, email):
-        assert that(email).equals('gabriel@lettuce.it')
+        assert expect(email).equals('gabriel@lettuce.it')
 
     feature = Feature.from_string(FEATURE13)
 
     first_scenario = feature.scenarios[0]
-    assert that(first_scenario.tags).equals(['runme'])
+    assert expect(first_scenario.tags).equals(['runme'])
 
     second_scenario = feature.scenarios[1]
-    assert that(second_scenario.tags).equals([])
+    assert expect(second_scenario.tags).equals([])
 
     third_scenario = feature.scenarios[2]
-    assert that(third_scenario.tags).equals(['slow'])
+    assert expect(third_scenario.tags).equals(['slow'])
 
     last_scenario = feature.scenarios[3]
-    assert that(last_scenario.tags).equals([])
+    assert expect(last_scenario.tags).equals([])
 
     result = feature.run()
     print
