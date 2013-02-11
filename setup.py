@@ -22,7 +22,7 @@ from setuptools import setup
 
 def get_packages():
     # setuptools can't do the job :(
-    packages = []
+    packages = ['']
     for root, dirnames, filenames in os.walk('lettuce'):
         if '__init__.py' in filenames:
             packages.append(".".join(os.path.split(root)).strip("."))
@@ -37,6 +37,13 @@ if sys.version_info[:2] < (2, 6):
 if os.name.lower() == 'nt':
     required_modules.append('colorama')
 
+import os
+test_reqs = os.path.join(os.getcwd(), 'requirements.txt')
+tests_require = [
+        line.strip() for line in open(test_reqs).readlines()
+        if not line.startswith("#")
+    ]
+
 setup(
     name='lettuce',
     version='0.2.12',
@@ -46,13 +53,11 @@ setup(
     url='http://lettuce.it',
     packages=get_packages(),
     install_requires=required_modules,
+    tests_require=tests_require,
     entry_points={
         'console_scripts': ['lettuce = lettuce.bin:main'],
         },
     package_data={
         'lettuce': ['COPYING', '*.md'],
     },
-    dependency_links=[
-        "git+git://github.com/spulec/sure.git@py3k#egg=sure"
-    ],
 )

@@ -16,17 +16,23 @@
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
 import os
 import commands
+import sys
 from os.path import dirname, abspath, join, curdir
 from nose.tools import assert_equals, with_setup
 
 from tests.asserts import prepare_stdout
+
+PY3 = sys.version_info[0] == 3
+
 
 def test_imports_terrain_under_path_that_is_run():
     old_path = abspath(curdir)
 
     os.chdir(join(abspath(dirname(__file__)), 'simple_features', '1st_feature_dir'))
 
-    status, output = commands.getstatusoutput('python -c "from lettuce import world;assert hasattr(world, \'works_fine\'); print \'it passed!\'"')
+
+    py_command = 'python3' if PY3 else 'python2'
+    status, output = commands.getstatusoutput('{} -c "from lettuce import world;assert hasattr(world, \'works_fine\'); print \'it passed!\'"'.format(py_command))
 
     assert_equals(status, 0)
     assert_equals(output, "it passed!")

@@ -227,7 +227,7 @@ class Server(object):
             if getattr(settings, 'LETTUCE_SERVE_ADMIN_MEDIA', False):
                 msg += ' (as per settings.LETTUCE_SERVE_ADMIN_MEDIA=True)'
 
-            print "%s..." % msg
+            print("%s..." % msg)
 
         self._actual_server.start()
         self._actual_server.wait()
@@ -242,7 +242,7 @@ class Server(object):
                 'python manage.py --no-server' % addrport,
             )
 
-        print "Django's builtin server is running at %s:%d" % addrport
+        print("Django's builtin server is running at %s:%d" % addrport)
 
     def stop(self, fail=False):
         pid = self._actual_server.pid

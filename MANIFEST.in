@@ -1,1 +1,2 @@
 include COPYING *.md
+include requirements.txt

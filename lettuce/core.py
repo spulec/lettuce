@@ -14,7 +14,7 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-
+from __future__ import unicode_literals
 
 import re
 import codecs
@@ -39,16 +39,16 @@ fs = FileSystem()
 
 class REP(object):
     "RegEx Pattern"
-    first_of = re.compile(ur'^first_of_')
-    last_of = re.compile(ur'^last_of_')
+    first_of = re.compile(r'^first_of_')
+    last_of = re.compile(r'^last_of_')
     language = re.compile(u"language:[ ]*([^\s]+)")
     within_double_quotes = re.compile(r'("[^"]+")')
     within_single_quotes = re.compile(r"('[^']+')")
     only_whitespace = re.compile('^\s*$')
     tag_extraction_regex = re.compile(r'(?:(?:^|\s+)[@]([^@\s]+))')
-    tag_strip_regex = re.compile(ur'(?:(?:^\s*|\s+)[@]\S+\s*)+$', re.DOTALL)
-    comment_strip1 = re.compile(ur'(^[^\'"]*)[#]([^\'"]*)$')
-    comment_strip2 = re.compile(ur'(^[^\'"]+)[#](.*)$')
+    tag_strip_regex = re.compile(r'(?:(?:^\s*|\s+)[@]\S+\s*)+$', re.DOTALL)
+    comment_strip1 = re.compile(r'(^[^\'"]*)[#]([^\'"]*)$')
+    comment_strip2 = re.compile(r'(^[^\'"]+)[#](.*)$')
 
 
 class HashList(list):
@@ -142,7 +142,7 @@ class StepDefinition(object):
         try:
             ret = self.function(self.step, *args, **kw)
             self.step.passed = True
-        except Exception, e:
+        except Exception as e:
             self.step.failed = True
             self.step.why = ReasonToFail(self.step, e)
             raise
@@ -456,10 +456,10 @@ class Step(object):
                     step.run(ignore_case)
                     steps_passed.append(step)
 
-            except NoDefinitionFound, e:
+            except NoDefinitionFound as e:
                 steps_undefined.append(e.step)
 
-            except Exception, e:
+            except Exception as e:
                 steps_failed.append(step)
                 reasons_to_fail.append(step.why)
 
@@ -728,7 +728,7 @@ class Scenario(object):
             step.scenario = self
 
     def _find_tags_in(self, original_string):
-        broad_regex = re.compile(ur"([@].*)%s: (%s)" % (
+        broad_regex = re.compile(r"([@].*)%s: (%s)" % (
             self.language.scenario_separator,
             self.name), re.DOTALL)
 
@@ -737,7 +737,7 @@ class Scenario(object):
             regexes.append(broad_regex)
 
         else:
-            regexes.append(re.compile(ur"(?:%s: %s.*)([@]?.*)%s: (%s)\s*\n" % (
+            regexes.append(re.compile(r"(?:%s: %s.*)([@]?.*)%s: (%s)\s*\n" % (
                 self.language.non_capturable_scenario_separator,
                 self.previous_scenario.name,
                 self.language.scenario_separator,
@@ -885,8 +885,8 @@ class Background(object):
             call_hook('before_each', 'step', step)
             try:
                 results.append(step.run(ignore_case))
-            except Exception, e:
-                print e
+            except Exception as e:
+                print(e)
                 pass
 
             call_hook('after_each', 'step', step)
@@ -1089,7 +1089,7 @@ class Feature(object):
         # replacing occurrences of Scenario Outline, with just "Scenario"
         scenario_prefix = u'%s:' % self.language.first_of_scenario
         regex = re.compile(
-            ur"%s:[\t\r\f\v]*" % self.language.scenario_separator, re.U | re.I | re.DOTALL)
+            r"%s:[\t\r\f\v]*" % self.language.scenario_separator, re.U | re.I | re.DOTALL)
 
         joined = regex.sub(scenario_prefix, joined)
 
